@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лекции по инфекционной безопасности</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0b2b4a 0%, #1a5276 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.96);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        /* ----- ШАПКА С НАЗВАНИЕМ ОРГАНИЗАЦИИ ----- */
+        .org-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .org-header .cross {
+            font-size: 28px;
+            color: #c0392b;
+            font-weight: 700;
+        }
+        .org-header .org-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0b2b4a;
+            letter-spacing: 0.5px;
+        }
+        .org-header .org-name span {
+            color: #c0392b;
+        }
+
+        .logo {
+            font-size: 42px;
+            margin-bottom: 4px;
+        }
+        h1 {
+            color: #0b2b4a;
+            font-size: 28px;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid #e8e8e8;
+            padding-bottom: 16px;
+        }
+
+        /* ----- ПОИСК ----- */
+        .search-wrap {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .search-wrap input {
+            width: 100%;
+            padding: 12px 20px 12px 48px;
+            border-radius: 30px;
+            border: 2px solid #d0d7de;
+            font-size: 15px;
+            background: #f8f9fc;
+            transition: all 0.3s;
+            outline: none;
+            color: #0b2b4a;
+        }
+        .search-wrap input:focus {
+            border-color: #c0392b;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.10);
+        }
+        .search-wrap input::placeholder {
+            color: #aaa;
+        }
+        .search-wrap .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #999;
+            pointer-events: none;
+        }
+        .search-wrap .clear-btn {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #ccc;
+            cursor: pointer;
+            display: none;
+            background: none;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .search-wrap .clear-btn:hover {
+            color: #c0392b;
+            background: #f0f0f0;
+        }
+        .search-wrap .clear-btn.visible {
+            display: block;
+        }
+
+        .lecture-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+        .lecture-item {
+            background: #f7f9fc;
+            border-radius: 12px;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+            border-left: 5px solid #1a5276;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .lecture-item:hover {
+            background: #eef2f7;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .lecture-name {
+            font-weight: 600;
+            color: #0b2b4a;
+            font-size: 15px;
+            flex: 1;
+        }
+        .lecture-name small {
+            font-weight: 400;
+            color: #888;
+            font-size: 12px;
+        }
+        .btn-presentation {
+            background: #1a5276;
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+        .btn-presentation:hover {
+            background: #c0392b;
+            transform: scale(1.04);
+            box-shadow: 0 4px 14px rgba(192, 57, 43, 0.30);
+        }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 2px solid #e8e8e8;
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer span {
+            color: #1a5276;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            .lecture-item {
+                flex-wrap: wrap;
+                padding: 12px 14px;
+            }
+            .btn-presentation {
+                margin-left: 0;
+                margin-top: 6px;
+                width: 100%;
+                text-align: center;
+                padding: 8px;
+            }
+            h1 { font-size: 22px; }
+            .logo { font-size: 32px; }
+            .lecture-name { font-size: 14px; }
+            .footer { flex-direction: column; text-align: center; }
+            .search-wrap input { font-size: 14px; padding: 10px 15px 10px 42px; }
+            .org-header .org-name { font-size: 15px; }
+            .org-header .cross { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ШАПКА С НАЗВАНИЕМ ОРГАНИЗАЦИИ -->
+        <div class="org-header">
+            <span class="cross">✚</span>
+            <span class="org-name">ГБУЗ РБ <span>ЦСМП</span> и МК</span>
+        </div>
+
+        <div class="logo">📚</div>
+        <h1>Лекции по инфекционной безопасности</h1>
+        <div class="subtitle">Выберите тему для просмотра</div>
+
+        <!-- ПОИСК -->
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Поиск по названию лекции..." oninput="filterLectures()">
+            <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+        </div>
+
+        <div class="lecture-grid" id="lectureGrid">
+
+            <!-- Аксион-дефибриллятор -->
+            <div class="lecture-item" data-name="аксион дефибриллятор">
+                <span class="lecture-name">⚡ Аксион-дефибриллятор</span>
+                <a href="https://disk.yandex.ru/i/1zij6Vrrd8Iw2g" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ГИМГЗ -->
+            <div class="lecture-item" data-name="гимгз">
+                <span class="lecture-name">🫀 ГИМГЗ</span>
+                <a href="https://disk.yandex.ru/i/K16dF84V239caw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ГЛПС -->
+            <div class="lecture-item" data-name="глпс геморрагическая лихорадка почечный синдром">
+                <span class="lecture-name">🩸 Геморрагическая лихорадка с почечным синдромом (ГЛПС)</span>
+                <a href="https://disk.yandex.ru/i/Yq8KnMqJ4W6iVA" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Глюкометр -->
+            <div class="lecture-item" data-name="глюкометр">
+                <span class="lecture-name">🩸 Глюкометр</span>
+                <a href="https://disk.yandex.ru/d/cwrk0H7mLNi9_g" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ИВЛ -->
+            <div class="lecture-item" data-name="ивл">
+                <span class="lecture-name">🫁 ИВЛ</span>
+                <a href="https://disk.yandex.ru/i/AY-vkkoLTEHRpQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Кишечная инфекция детей -->
+            <div class="lecture-item" data-name="кишечная инфекция дети">
+                <span class="lecture-name">🧒 Кишечная инфекция у детей</span>
+                <a href="https://disk.yandex.ru/i/NBrJo-GAk5By3Q" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Клещевой энцефалит -->
+            <div class="lecture-item" data-name="клещевой энцефалит">
+                <span class="lecture-name">🦟 Клещевой энцефалит</span>
+                <a href="https://disk.yandex.ru/i/mgj8sZQfGGM3UA" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Констатация смерти -->
+            <div class="lecture-item" data-name="констатация смерти">
+                <span class="lecture-name">⚰️ Констатация смерти</span>
+                <a href="https://disk.yandex.ru/i/3uREH6omu5sJDw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Корь -->
+            <div class="lecture-item" data-name="корь">
+                <span class="lecture-name">🤒 Корь</span>
+                <a href="https://disk.yandex.ru/i/ShDV9OTbPmEg5Q" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Медицинские отходы -->
+            <div class="lecture-item" data-name="медицинские отходы">
+                <span class="lecture-name">🗑️ Медицинские отходы</span>
+                <a href="https://disk.yandex.ru/i/ft29PMjxV1madw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Менингококковая инфекция -->
+            <div class="lecture-item" data-name="менингококковая инфекция">
+                <span class="lecture-name">🦠 Менингококковая инфекция</span>
+                <a href="https://disk.yandex.ru/i/Ay__AJ3np40RQw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Небулайзер -->
+            <div class="lecture-item" data-name="небулайзер">
+                <span class="lecture-name">💨 Небулайзер</span>
+                <a href="https://disk.yandex.ru/d/VGm1e2Xj8s8GcQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Обработка рук -->
+            <div class="lecture-item" data-name="обработка рук">
+                <span class="lecture-name">🧼 Обработка рук</span>
+                <a href="https://disk.yandex.ru/i/NP-4RqSo-PWftQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Ожоги -->
+            <div class="lecture-item" data-name="ожоги">
+                <span class="lecture-name">🔥 Ожоги</span>
+                <a href="https://disk.yandex.ru/i/QU7DGGaCT5lx4A" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ОНМК -->
+            <div class="lecture-item" data-name="онмк острое нарушение мозгового кровообращения">
+                <span class="lecture-name">🧠 Острое нарушение мозгового кровообращения (ОНМК)</span>
+                <a href="https://disk.yandex.ru/i/sD8cI9VO5cJV8g" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ООИ -->
+            <div class="lecture-item" data-name="оои особо опасные инфекции">
+                <span class="lecture-name">⚠️ Особо опасные инфекции (ООИ)</span>
+                <a href="https://disk.yandex.ru/i/Fvfo0ukDocWtvA" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Острый инфаркт миокарда -->
+            <div class="lecture-item" data-name="острый инфаркт миокарда">
+                <span class="lecture-name">❤️ Острый инфаркт миокарда без подъема сегмента ST</span>
+                <a href="https://disk.yandex.ru/i/17WNhyEjCMCq_w" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Отсос -->
+            <div class="lecture-item" data-name="отсос">
+                <span class="lecture-name">💉 Отсос</span>
+                <a href="https://disk.yandex.ru/d/u5hy1nRN9K-98Q" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- РИК -->
+            <div class="lecture-item" data-name="рик">
+                <span class="lecture-name">🏥 РИК</span>
+                <a href="https://disk.yandex.ru/d/EveifuNIthZbSQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Рожа -->
+            <div class="lecture-item" data-name="рожа">
+                <span class="lecture-name">🔴 Рожа</span>
+                <a href="https://disk.yandex.ru/i/iWZ0TCt7w1soAw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Туберкулез -->
+            <div class="lecture-item" data-name="туберкулез">
+                <span class="lecture-name">🫁 Туберкулез</span>
+                <a href="https://disk.yandex.ru/i/KKhFTvk9PEEjDQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Фибрилляция и трепетание предсердий -->
+            <div class="lecture-item" data-name="фибрилляция трепетание предсердий">
+                <span class="lecture-name">💓 Фибрилляция и трепетание предсердий у взрослых</span>
+                <a href="https://disk.yandex.ru/i/9dvg-aISxCqtRQ" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Хроническая сердечная недостаточность -->
+            <div class="lecture-item" data-name="хроническая сердечная недостаточность">
+                <span class="lecture-name">🫀 Хроническая сердечная недостаточность</span>
+                <a href="https://disk.yandex.ru/i/EKW4frFK9Y8Bhg" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ЧС -->
+            <div class="lecture-item" data-name="чс чрезвычайные ситуации">
+                <span class="lecture-name">🚨 Чрезвычайные ситуации (ЧС)</span>
+                <a href="https://disk.yandex.ru/i/yvrtaiAuOSR_2g" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- Шок -->
+            <div class="lecture-item" data-name="шок">
+                <span class="lecture-name">⚡ Шок в догоспитальной практике</span>
+                <a href="https://disk.yandex.ru/i/uSAJFu3Kwx56pw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+            <!-- ЭКГ Аксион -->
+            <div class="lecture-item" data-name="экг аксион">
+                <span class="lecture-name">📊 ЭКГ Аксион</span>
+                <a href="https://disk.yandex.ru/i/WXgxyHpNNpBWkw" target="_blank" class="btn-presentation">📖 Смотреть</a>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <span>📍 ГБУЗ РБ ЦСМП и МК</span>
+            <span>•</span>
+            <span>Все материалы предназначены для медицинского персонала</span>
+        </div>
+    </div>
+
+    <script>
+        function filterLectures() {
+            const input = document.getElementById('searchInput');
+            const query = input.value.toLowerCase().trim();
+            const items = document.querySelectorAll('.lecture-item');
+            const clearBtn = document.getElementById('clearBtn');
+
+            items.forEach(item => {
+                const name = item.getAttribute('data-name') || '';
+                if (name.includes(query) || query === '') {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (query.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            input.value = '';
+            filterLectures();
+            input.focus();
+        }
+    </script>
+</body>
+</html>
